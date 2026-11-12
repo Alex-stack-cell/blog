@@ -1,0 +1,50 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import 'tailwindcss';
+
+/*
+ * Design tokens : la seule source de vérité du thème Xbox.
+ * Chaque variable --color-* génère automatiquement des utilitaires Tailwind
+ * (bg-xbox, text-xbox-bright, border-xbox/60, from-surface...).
+ * Pour changer le thème, on modifie uniquement ce bloc.
+ */
+@theme {
+  --color-xbox: #107c10;
+  --color-xbox-deep: #0b5a0b;
+  --color-xbox-bright: #9bf00b;
+
+  --color-canvas: #0e0e0e;
+  --color-surface: #1a1a1a;
+
+  --color-danger: #ff5c5c;
+
+  --shadow-glow: 0 0 30px rgb(16 124 16 / 0.45);
+}
+
+/* Motifs de style répétés, réutilisables comme n'importe quelle classe Tailwind. */
+@utility surface {
+  @apply rounded-2xl bg-surface ring-1 ring-white/10;
+}
+
+@utility display-title {
+  @apply font-black uppercase tracking-tight text-white;
+}
+
+/* Boutons : mêmes formes pour un <button> et un <a>. */
+@utility button-outline {
+  @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-xbox px-4 py-2 text-sm font-bold uppercase tracking-wider text-xbox-bright transition hover:bg-xbox hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-xbox-bright;
+}
+
+@utility button-solid {
+  @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-xbox bg-xbox px-4 py-2 text-sm font-bold uppercase tracking-wider text-white shadow-md transition hover:bg-xbox-bright hover:text-canvas hover:shadow-glow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-xbox-bright;
+}
+
+/* Formulaires : libellé et contrôle (input, textarea, select). */
+@utility field-label {
+  @apply mb-2 block text-xs font-bold uppercase tracking-wider text-gray-400;
+}
+
+@utility field-control {
+  @apply w-full rounded-xl border border-white/10 bg-canvas px-4 py-3 text-gray-100 placeholder:text-gray-500 focus:border-xbox-bright focus:outline-none focus:ring-2 focus:ring-xbox-bright/40;
+  color-scheme: dark;
+}

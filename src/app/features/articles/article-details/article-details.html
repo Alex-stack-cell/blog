@@ -1,0 +1,57 @@
+<ui-page>
+  <main class="mx-auto max-w-4xl px-4 py-8">
+    <div class="mb-6 flex items-center justify-between gap-4">
+      <ui-link-button to="/">← Retour</ui-link-button>
+      @if (article(); as a) {
+        <ui-link-button [to]="'/articles/' + a.id + '/edit'">
+          <span aria-hidden="true">✎</span> Modifier
+        </ui-link-button>
+      }
+    </div>
+
+    @if (article(); as a) {
+      <article class="surface overflow-hidden shadow-2xl">
+        <div class="relative">
+          <img class="aspect-video w-full object-cover" [src]="a.imageUrl" [alt]="a.title" />
+          <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent"></div>
+          <ui-badge class="absolute left-4 top-4">{{ a.category }}</ui-badge>
+        </div>
+
+        <div class="flex flex-col gap-6 p-6 md:p-10">
+          <h1 class="display-title text-3xl leading-tight md:text-5xl">{{ a.title }}</h1>
+
+          <div
+            class="flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-white/10 py-3 text-sm text-gray-400"
+          >
+            <span>
+              Par <strong class="text-xbox-bright">{{ a.author }}</strong>
+            </span>
+            <time [attr.datetime]="a.publishedAt">{{ a.publishedAt | date: 'longDate' }}</time>
+            <span>{{ a.readingTimeMinutes }} min de lecture</span>
+            <span class="ml-auto font-bold text-xbox-bright">♥ {{ a.likes }}</span>
+          </div>
+
+          <p class="text-lg leading-relaxed text-gray-300">{{ a.content }}</p>
+
+          <ul class="flex flex-wrap gap-2">
+            @for (tag of a.tags; track tag) {
+              <li>
+                <ui-tag>#{{ tag }}</ui-tag>
+              </li>
+            }
+          </ul>
+        </div>
+      </article>
+    } @else if (isLoading()) {
+      <p class="surface p-10 text-center text-xl font-bold text-gray-400" role="status">
+        Chargement…
+      </p>
+    } @else if (failed()) {
+      <p class="surface p-10 text-center text-xl font-bold text-red-400" role="alert">
+        Impossible de charger l'article. Vérifiez que l'API est lancée et réessayez.
+      </p>
+    } @else {
+      <p class="surface p-10 text-center text-xl font-bold text-gray-400">Article introuvable.</p>
+    }
+  </main>
+</ui-page>

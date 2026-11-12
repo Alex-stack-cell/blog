@@ -1,0 +1,28 @@
+<ui-page>
+  <main>
+    <header
+      class="relative overflow-hidden border-b border-xbox/60 bg-gradient-to-br from-xbox via-xbox-deep to-canvas px-4 py-16 text-center"
+    >
+      <div
+        class="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-xbox-bright/20 blur-3xl"
+      ></div>
+      <p class="mb-3 text-xs font-bold uppercase tracking-[0.4em] text-xbox-bright">Le blog</p>
+      <h1 class="display-title text-4xl md:text-6xl" data-testid="welcome">
+        Bienvenue dans le blog <span class="text-xbox-bright">Xbox</span>
+      </h1>
+      <p class="mx-auto mt-4 max-w-xl text-gray-300">
+        Tests, rumeurs et galères de manettes. Rien de sérieux, tout est vrai (ou presque).
+      </p>
+    </header>
+
+    <section>
+      <app-search />
+
+      <app-article-list>
+        <ui-link-button to="/articles/new" variant="solid">
+          <span aria-hidden="true">+</span> Nouvel article
+        </ui-link-button>
+      </app-article-list>
+    </section>
+  </main>
+</ui-page>

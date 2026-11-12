@@ -1,0 +1,143 @@
+<ui-page>
+  <main class="mx-auto max-w-2xl px-4 py-8">
+    <ui-link-button to="/" class="mb-6">← Retour</ui-link-button>
+
+    @if (notFound()) {
+      <p class="surface p-10 text-center text-xl font-bold text-gray-400">Article introuvable.</p>
+    } @else if (isEditMode() && isLoading()) {
+      <p class="surface p-10 text-center text-xl font-bold text-gray-400" role="status">
+        Chargement…
+      </p>
+    } @else {
+      <form class="surface flex flex-col gap-6 p-6 shadow-2xl md:p-10" (submit)="onSubmit($event)">
+        <h1 class="display-title text-3xl md:text-4xl">
+          {{ isEditMode() ? "Modifier l'article" : 'Nouvel article' }}
+        </h1>
+
+        <div>
+          <label for="title" class="field-label">Titre</label>
+          <input id="title" type="text" class="field-control" [formField]="createForm.title" />
+          <ng-container
+            [ngTemplateOutlet]="fieldErrors"
+            [ngTemplateOutletContext]="{ $implicit: createForm.title }"
+          />
+        </div>
+
+        <div>
+          <label for="excerpt" class="field-label">Résumé</label>
+          <textarea
+            id="excerpt"
+            rows="2"
+            class="field-control"
+            [formField]="createForm.excerpt"
+          ></textarea>
+          <ng-container
+            [ngTemplateOutlet]="fieldErrors"
+            [ngTemplateOutletContext]="{ $implicit: createForm.excerpt }"
+          />
+        </div>
+
+        <div>
+          <label for="content" class="field-label">Contenu</label>
+          <textarea
+            id="content"
+            rows="8"
+            class="field-control"
+            [formField]="createForm.content"
+          ></textarea>
+          <ng-container
+            [ngTemplateOutlet]="fieldErrors"
+            [ngTemplateOutletContext]="{ $implicit: createForm.content }"
+          />
+        </div>
+
+        <div>
+          <label for="category" class="field-label">Catégorie</label>
+          <select id="category" class="field-control" [formField]="createForm.category">
+            <option value="">Choisir une catégorie…</option>
+            @for (category of categories(); track category) {
+              <option [value]="category">{{ category }}</option>
+            }
+            <option [value]="otherCategory">Autre…</option>
+          </select>
+          <ng-container
+            [ngTemplateOutlet]="fieldErrors"
+            [ngTemplateOutletContext]="{ $implicit: createForm.category }"
+          />
+
+          @if (createForm.category().value() === otherCategory) {
+            <input
+              id="newCategory"
+              type="text"
+              aria-label="Nom de la nouvelle catégorie"
+              placeholder="Nom de la nouvelle catégorie"
+              class="field-control mt-2"
+              [formField]="createForm.newCategory"
+            />
+            <ng-container
+              [ngTemplateOutlet]="fieldErrors"
+              [ngTemplateOutletContext]="{ $implicit: createForm.newCategory }"
+            />
+          }
+        </div>
+
+        <div>
+          <label for="tags" class="field-label">Tags (séparés par des virgules)</label>
+          <input
+            id="tags"
+            type="text"
+            placeholder="manette, game pass, test"
+            class="field-control"
+            [formField]="createForm.tags"
+          />
+          <ng-container
+            [ngTemplateOutlet]="fieldErrors"
+            [ngTemplateOutletContext]="{ $implicit: createForm.tags }"
+          />
+        </div>
+
+        <div>
+          <label for="imageUrl" class="field-label">Image (URL)</label>
+          <input
+            id="imageUrl"
+            type="url"
+            placeholder="https://…"
+            class="field-control"
+            [formField]="createForm.imageUrl"
+          />
+          <ng-container
+            [ngTemplateOutlet]="fieldErrors"
+            [ngTemplateOutletContext]="{ $implicit: createForm.imageUrl }"
+          />
+        </div>
+
+        <div class="flex justify-end border-t border-white/10 pt-6">
+          <button
+            type="submit"
+            class="button-solid disabled:cursor-not-allowed disabled:opacity-50"
+            [disabled]="createForm().submitting()"
+          >
+            {{ isEditMode() ? 'Enregistrer' : 'Publier' }}
+          </button>
+        </div>
+      </form>
+    }
+  </main>
+</ui-page>
+
+<ui-modal
+  [title]="feedback().title"
+  [closeLabel]="feedback().closeLabel"
+  [open]="outcome() !== null"
+  (closed)="onFeedbackClosed()"
+>
+  {{ feedback().message }}
+</ui-modal>
+
+<ng-template #fieldErrors let-field>
+  @if (field().touched() && field().invalid()) {
+    @for (error of field().errors(); track error.kind) {
+      <p class="mt-1 text-sm text-red-400" role="alert">{{ error.message }}</p>
+    }
+  }
+</ng-template>

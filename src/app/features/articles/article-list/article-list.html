@@ -1,0 +1,43 @@
+<div class="mx-auto mt-4 flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4">
+  <p class="text-sm text-gray-400" aria-live="polite">
+    @switch (filteredArticles().length) {
+      @case (0) {
+        Aucun article
+      }
+      @case (1) {
+        1 article
+      }
+      @default {
+        {{ filteredArticles().length }} articles
+      }
+    }
+  </p>
+  <!-- Emplacement libre : la page y place ses actions (ex. « Nouvel article »). -->
+  <ng-content />
+</div>
+
+@if (error()) {
+  <ui-error-message />
+} @else if (isLoading()) {
+  <ui-loading />
+} @else if (filteredArticles().length > 0) {
+  <div
+    class="mx-auto grid max-w-6xl grid-cols-1 justify-items-center gap-6 p-6 sm:grid-cols-2 lg:grid-cols-3"
+  >
+    @for (article of filteredArticles(); track article.id) {
+      <app-article-card [article]="article" />
+    }
+  </div>
+} @else {
+  <div class="mx-auto max-w-6xl p-6">
+    <div class="surface flex flex-col items-center gap-4 px-6 py-14 text-center">
+      <p class="text-lg font-bold text-white">Aucun article ne correspond à ta recherche.</p>
+      <p class="text-gray-400">Essaie un autre mot-clé ou une autre catégorie.</p>
+      @if (hasActiveFilter()) {
+        <button type="button" class="button-outline" (click)="reset()">
+          Réinitialiser les filtres
+        </button>
+      }
+    </div>
+  </div>
+}

@@ -1,0 +1,20 @@
+<header class="border-b border-white/10 bg-canvas">
+  <nav class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
+    <a routerLink="/" class="display-title text-lg">Blog <span class="text-xbox-bright">Xbox</span></a>
+
+    <div class="flex items-center gap-2">
+      <label for="current-user" class="text-xs font-bold uppercase tracking-wider text-gray-400">
+        Utilisateur
+      </label>
+      <select
+        id="current-user"
+        class="rounded-xl border border-white/10 bg-canvas px-3 py-2 text-sm text-gray-100 focus:border-xbox-bright focus:outline-none"
+        (change)="onUserChange($event)"
+      >
+        @for (user of userService.users; track user) {
+          <option [value]="user" [selected]="user === userService.currentUser()">{{ user }}</option>
+        }
+      </select>
+    </div>
+  </nav>
+</header>

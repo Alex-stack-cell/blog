@@ -1,0 +1,38 @@
+<article
+  class="surface group flex h-full w-full max-w-sm flex-col overflow-hidden shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-glow hover:ring-xbox"
+>
+  <div class="relative overflow-hidden">
+    <img
+      class="aspect-video w-full object-cover transition duration-500 group-hover:scale-105"
+      [src]="article().imageUrl"
+      [alt]="article().title"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent"></div>
+    @if (article().category) {
+      <ui-badge class="absolute left-3 top-3">{{ article().category }}</ui-badge>
+    }
+  </div>
+
+  <div class="flex flex-1 flex-col gap-3 p-5">
+    <time
+      class="text-xs font-bold uppercase tracking-wider text-xbox-bright"
+      [attr.datetime]="article().publishedAt"
+    >
+      {{ article().publishedAt | date: 'longDate' }}
+    </time>
+
+    <h2 class="text-xl font-black leading-snug text-white">
+      <a class="transition hover:text-xbox-bright" routerLink="/articles/{{ article().id }}">
+        {{ article().title }}
+      </a>
+    </h2>
+
+    <p class="line-clamp-3 text-base text-gray-400">{{ article().excerpt }}</p>
+
+    <div class="mt-auto flex flex-wrap gap-2 pt-2">
+      @for (tag of article().tags; track tag) {
+        <ui-tag>#{{ tag }}</ui-tag>
+      }
+    </div>
+  </div>
+</article>
